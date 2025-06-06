@@ -109,15 +109,19 @@ async function checkResult() {
     const userID = document.getElementById("studentID").value.trim();
     const userPass = document.getElementById("studentPass").value.trim();
     const message = document.getElementById("message");
-    const adminID = "admin123";        // Your special admin ID
-    const adminPassword = "password"; // Your special admin password
+    const adminID = "admin123";
+    const adminPassword = "password";
 
     if (!userID || !userPass) {
         message.textContent = "Please enter both ID and Password.";
         return;
     }
-    // Check if user is admin
-    
+
+    // ✅ Check if user is admin first
+    if (userID === adminID && userPass === adminPassword) {
+        window.location.href = "ADMIN.html";
+        return; // 🔥 Prevent the rest of the function from running
+    }
 
     try {
         const response = await fetch(scriptURL);
@@ -127,12 +131,11 @@ async function checkResult() {
             message.textContent = "Data format error. Check Google Sheets structure.";
             return;
         }
-        if (userID === adminID && userPass === adminPassword) {
-            // Redirect to admin page
-            window.location.href = "ADMIN.html";
-          } 
 
-        let matchedUser = data.find(user => String(user.ID).trim() === userID && String(user.Password).trim() === userPass);
+        let matchedUser = data.find(user =>
+            String(user.ID).trim() === userID &&
+            String(user.Password).trim() === userPass
+        );
 
         if (matchedUser) {
             displayResults(matchedUser);
@@ -143,6 +146,8 @@ async function checkResult() {
         message.textContent = "Error fetching data. Try again later.";
     }
 }
+
+
 
 function displayResults(student) {
     document.querySelector(".login-box").style.display = "none";

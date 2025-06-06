@@ -370,6 +370,14 @@
       justify-content: space-between;
       align-items: center;
     }
+
+    #studentsTableContainer{
+      height: 400px;
+
+      overflow-y: auto;
+      width: 70%;
+      margin: auto;
+    }
   
     
   </style>
@@ -516,7 +524,7 @@
     <button onclick="fetchAllStudents()" class="action-button">Fetch All Students</button>
     </div>
   
-    <div class="table-container">
+    <div class="table-container" id="studentsTableContainer">
       <table class="student-table" id="studentList" border="1">
         <thead>
           <tr>
