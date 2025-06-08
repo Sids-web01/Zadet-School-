@@ -26,15 +26,20 @@
       flex-direction: column;
       padding: 20px;
       transition: transform 0.3s ease;
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 100%;
+      z-index: 1000;
     }
 
     .sidebar h2 {
       margin-bottom: 20px;
-      color: #f0f0f0;
       text-align: center;
+      color: white;
     }
 
-    .sidebar button {
+    .sidebar button.sidebar-btn {
       background-color: #3a3a50;
       color: white;
       border: none;
@@ -46,52 +51,54 @@
       transition: background-color 0.3s ease;
     }
 
-    .sidebar button:hover {
+    .sidebar button.sidebar-btn:hover {
       background-color: #575776;
+    }
+
+    /* Toggle Button */
+    .toggle-btn {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      font-size: 22px;
+      background: none;
+      border: none;
+      color: white;
+      cursor: pointer;
+      z-index: 1100;
+    }
+
+    /* When sidebar is hidden */
+    .sidebar.hidden {
+      transform: translateX(-100%);
+    }
+
+    .toggle-corner {
+      position: fixed;
+      top: 15px;
+      left: 15px;
+      background: none;
+      border: none;
+      font-size: 40px;
+      color: white;
+      z-index: 1100;
+      cursor: pointer;
     }
 
     .main {
       flex: 1;
+      margin-left: 220px;
       padding: 30px;
+      transition: margin-left 0.3s ease;
     }
 
-    /* Hamburger Menu Button */
-    .menu-toggle {
-      display: none;
-      position: absolute;
-      top: 20px;
-      left: 20px;
-      background-color: #1e1e2f;
-      color: white;
-      border: none;
-      padding: 10px 15px;
-      font-size: 18px;
-      border-radius: 5px;
-      cursor: pointer;
-      z-index: 1000;
+    .main.full-width {
+      margin-left: 0;
     }
 
-    /* Responsive Design */
     @media (max-width: 768px) {
-      .sidebar {
-        position: fixed;
-        top: 0;
-        left: 0;
-        height: 100%;
-        transform: translateX(-100%);
-        z-index: 999;
-      }
-
-      .sidebar.active {
-        transform: translateX(0);
-      }
-
-      .menu-toggle {
-        display: block;
-      }
-
       .main {
-        padding-top: 60px;
+        margin-left: 0;
       }
     }
   </style>
@@ -861,27 +868,30 @@
 <body>
 
     <div class="stars"></div>
-  <div class="shooting-star"></div>
-  <div class="shooting-star"></div>
-  <div class="shooting-star"></div>
-  <div class="shooting-star"></div>
-  <div class="shooting-star"></div>
+    <div class="shooting-star"></div>
+    <div class="shooting-star"></div>
+    <div class="shooting-star"></div>
+    <div class="shooting-star"></div>
+    <div class="shooting-star"></div>
 
-  <button class="menu-toggle" onclick="toggleSidebar()">☰</button>
-
+  <!-- Sidebar -->
   <div class="sidebar" id="sidebar">
+    <button class="toggle-btn" onclick="toggleSidebar()">✖</button>
     <h2>Menu</h2>
-    <!-- TAB buttons -->
-  <div class="tabs">
-    <button class="tab-button active" data-tab="tab1">Edit Grades</button>
-    <button class="tab-button" data-tab="tab2">Register Students</button>
-    <button class="tab-button" data-tab="tab3">Add Grades</button>
-    <button class="tab-button" data-tab="tab4">Edit Studnt Info</button>
-    <button class="tab-button" id="logoutBtn" onclick="logout()">Logout</button>
-  </div>
+    <div class="tabs">
+        <button class="tab-button active" data-tab="tab1">Edit Grades</button>
+        <button class="tab-button" data-tab="tab2">Register Students</button>
+        <button class="tab-button" data-tab="tab3">Add Grades</button>
+        <button class="tab-button" data-tab="tab4">Edit Studnt Info</button>
+        <button class="tab-button" id="logoutBtn" onclick="logout()">Logout</button>
+      </div>
   </div>
 
-  <div class="main">
+  <!-- Toggle in corner when sidebar is hidden -->
+  <button class="toggle-corner" id="cornerToggle" onclick="toggleSidebar()" style="display: none;">☰</button>
+
+  <!-- Main content -->
+  <div class="main" id="mainContent">
     <div id="tab2" class="tab-content">
         <!-- Add Student -->
         <div id="addStudent" class="tab active">
@@ -1070,16 +1080,31 @@
     
     
       </div>
+    
   </div>
 
   
 
 </body>
 <script>
+    const sidebar = document.getElementById('sidebar');
+    const main = document.getElementById('mainContent');
+    const cornerToggle = document.getElementById('cornerToggle');
+
     function toggleSidebar() {
-      document.getElementById("sidebar").classList.toggle("active");
+      sidebar.classList.toggle('hidden');
+      main.classList.toggle('full-width');
+
+      // Show corner toggle if sidebar is hidden
+      if (sidebar.classList.contains('hidden')) {
+        cornerToggle.style.display = 'block';
+      } else {
+        cornerToggle.style.display = 'none';
+      }
     }
   </script>
+
+
 <script>
     // TAB switching logic - only added, original JS is untouched
     const tabs = document.querySelectorAll(".tab-button");
