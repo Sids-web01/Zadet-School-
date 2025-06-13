@@ -3,7 +3,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <title>Zadet School Result Website</title>
+  <title>Zadet Preparatory & International School Website</title>
 
   <meta name="description" content="Check Zadet School results online. Students can log in with their ID and password to view results instantly and securely." />
   
